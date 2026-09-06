@@ -1,0 +1,10 @@
+* text=auto eol=lf
+
+# Windows-native files consumed by PowerShell / Win32 profile API
+*.ps1 text eol=crlf
+*.ini text eol=crlf
+
+# Binary assets
+*.svgz binary
+*.bmp binary
+*.sph binary

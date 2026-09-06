@@ -1,0 +1,45 @@
+# Build directories
+build/
+tmp/
+vcpkg_installed/
+
+# IDE / Editor
+.vscode/
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Compiled binaries
+*.exe
+*.sph
+*.dll
+*.lib
+*.exp
+*.obj
+*.pdb
+*.ilk
+
+# Test files
+*.bmp
+
+# Debug and logs
+*.log
+runsph_test*
+runspx.txt
+
+# User-specific
+.claude/
+.serena/
+
+# Temporary files
+*.tmp
+
+# Per-plugin runtime config (each user creates their own; not version-controlled)
+*.ini
+!ifmsvg.ini
+
+# Windows
+Thumbs.db
+Desktop.ini

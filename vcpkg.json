@@ -1,0 +1,11 @@
+{
+  "name": "ifmsvg",
+  "version": "0.1.0",
+  "dependencies": [
+    "zlib",
+    {
+      "name": "catch2",
+      "host": false
+    }
+  ]
+}

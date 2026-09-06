@@ -1,0 +1,13 @@
+LIBRARY ifmsvg
+EXPORTS
+    GetPluginInfo
+    GetPluginInfoW
+    IsSupported
+    IsSupportedW
+    GetPictureInfo
+    GetPictureInfoW
+    GetPicture
+    GetPictureW
+    GetPreview
+    GetPreviewW
+    ConfigurationDlg

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- 背景: 完全透明（何も描かない） -->
+
+  <!-- 左上: 完全不透明の赤 -->
+  <rect x="10" y="10" width="80" height="80" fill="red"/>
+
+  <!-- 右上: 50%透明の青 -->
+  <rect x="110" y="10" width="80" height="80" fill="blue" fill-opacity="0.5"/>
+
+  <!-- 左下: 完全透明（見えないはず） -->
+  <rect x="10" y="110" width="80" height="80" fill="green" fill-opacity="0"/>
+
+  <!-- 右下: グラデーション（透明→不透明） -->
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="purple" stop-opacity="0"/>
+      <stop offset="1" stop-color="purple" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+  <rect x="110" y="110" width="80" height="80" fill="url(#grad)"/>
+</svg>
