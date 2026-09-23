@@ -54,38 +54,6 @@ default_family=Arial
 extra_dirs=
 ```
 
-## ビルド
-
-### 必要な環境
-
-| ツール | バージョン |
-|--------|-----------|
-| Visual Studio 2022 | Build Tools または Community 以上 |
-| CMake | 4.0 以上 |
-| vcpkg | 最新版（`VCPKG_ROOT` 環境変数を設定）|
-| Rust (rustup) | stable x86_64-pc-windows-msvc |
-
-### ビルド手順
-
-```powershell
-# Release ビルド（初回は FetchContent で Corrosion + resvg を取得するため時間がかかります）
-.\build.ps1
-
-# Debug ビルド
-.\build.ps1 -Configuration Debug
-
-# 強制リビルド
-.\build.ps1 -Rebuild
-```
-
-成功すると `build\Release\ifmsvg.sph` が生成されます。
-
-### テスト実行
-
-```powershell
-ctest --test-dir build -C Release --output-on-failure
-```
-
 ## エクスポート関数
 
 | 関数 | 説明 |
