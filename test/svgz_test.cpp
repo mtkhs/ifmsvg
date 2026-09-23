@@ -36,6 +36,16 @@ TEST_CASE("Svgz::Decompress round-trips a real SVG", "[svgz]") {
     REQUIRE(result == svg);
 }
 
+TEST_CASE("Svgz::Decompress stops at the output limit", "[svgz]") {
+    std::string svg(100000, ' ');  // compresses to a few hundred bytes
+    auto gz = GzipCompress(svg);
+
+    std::vector<uint8_t> out;
+    REQUIRE_FALSE(Svgz::Decompress(gz.data(), gz.size(), out, svg.size() - 1));
+    REQUIRE(Svgz::Decompress(gz.data(), gz.size(), out, svg.size()));
+    REQUIRE(out.size() == svg.size());
+}
+
 TEST_CASE("Svgz::Decompress fails on garbage input", "[svgz]") {
     const uint8_t garbage[] = {0x1F, 0x8B, 0xFF, 0xFF, 0xFF};
     std::vector<uint8_t> out;

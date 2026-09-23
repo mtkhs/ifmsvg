@@ -4,7 +4,7 @@
 
 namespace Svgz {
 
-bool Decompress(const uint8_t* gz, size_t gz_len, std::vector<uint8_t>& out) {
+bool Decompress(const uint8_t* gz, size_t gz_len, std::vector<uint8_t>& out, size_t max_out) {
     if (!gz || gz_len == 0) return false;
 
     z_stream zs{};
@@ -24,6 +24,11 @@ bool Decompress(const uint8_t* gz, size_t gz_len, std::vector<uint8_t>& out) {
         zs.avail_out = static_cast<uInt>(buf.size());
         rc = inflate(&zs, Z_NO_FLUSH);
         if (rc != Z_OK && rc != Z_STREAM_END) {
+            inflateEnd(&zs);
+            return false;
+        }
+        const size_t produced = buf.size() - zs.avail_out;
+        if (out.size() + produced > max_out) {
             inflateEnd(&zs);
             return false;
         }
