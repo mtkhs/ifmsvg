@@ -1,4 +1,3 @@
-LIBRARY ifmsvg
 EXPORTS
     GetPluginInfo
     GetPluginInfoW

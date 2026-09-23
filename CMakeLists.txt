@@ -1,7 +1,4 @@
-set(CMAKE_GENERATOR "Visual Studio 17 2022")
-message("generator is set to ${CMAKE_GENERATOR}")
-
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.21)
 
 if(NOT DEFINED VCPKG_TARGET_TRIPLET)
     set(VCPKG_TARGET_TRIPLET "x64-windows-static-md")
@@ -17,14 +14,16 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 endif()
 message(STATUS "CMAKE_TOOLCHAIN_FILE is ${CMAKE_TOOLCHAIN_FILE}")
 
-include("${CMAKE_TOOLCHAIN_FILE}")
-
 project(ifmsvg)
 enable_language(CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+
+if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+    message(FATAL_ERROR "ifmsvg requires a 64-bit (x64) build. Pass -A x64.")
+endif()
 
 if(MSVC)
     add_compile_options(/W4 /utf-8 /Zc:__cplusplus)
