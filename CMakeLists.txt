@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.21)
 if(NOT DEFINED VCPKG_TARGET_TRIPLET)
     set(VCPKG_TARGET_TRIPLET "x64-windows-static-md")
 endif()
-message(STATUS "VCPKG_TARGET_TRIPLET is ${VCPKG_TARGET_TRIPLET}")
 
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     if(DEFINED ENV{VCPKG_ROOT})
@@ -12,14 +11,14 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
         message(FATAL_ERROR "VCPKG_ROOT not set and CMAKE_TOOLCHAIN_FILE not provided")
     endif()
 endif()
-message(STATUS "CMAKE_TOOLCHAIN_FILE is ${CMAKE_TOOLCHAIN_FILE}")
 
-project(ifmsvg)
-enable_language(CXX)
+project(ifmsvg LANGUAGES CXX)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
     message(FATAL_ERROR "ifmsvg requires a 64-bit (x64) build. Pass -A x64.")
@@ -28,8 +27,6 @@ endif()
 if(MSVC)
     add_compile_options(/W4 /utf-8 /Zc:__cplusplus)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
-else()
-    add_compile_options(-Wall -Wextra -pedantic)
 endif()
 
 # --- Corrosion (CMake-Rust bridge) via FetchContent ---
@@ -59,7 +56,7 @@ corrosion_import_crate(
 )
 set(RESVG_INCLUDE_DIR ${resvg_src_SOURCE_DIR}/crates/c-api)
 
-# Sources shared between plugin and tests (added incrementally in later tasks).
+# Sources shared between plugin and tests.
 set(MODULE_SOURCES
     ${CMAKE_SOURCE_DIR}/src/path_utils.cpp
     ${CMAKE_SOURCE_DIR}/src/bmp.cpp
@@ -75,17 +72,13 @@ add_library(ifmsvg SHARED
     src/ifmsvg.cpp
     ${MODULE_SOURCES}
 )
-target_include_directories(ifmsvg PRIVATE ./include)
+target_include_directories(ifmsvg PRIVATE include)
 set_target_properties(ifmsvg PROPERTIES
     PREFIX ""
     OUTPUT_NAME "ifmsvg"
     SUFFIX ".sph"
+    LINK_FLAGS "/DEF:${CMAKE_CURRENT_SOURCE_DIR}/ifmsvg.def"
 )
-if(MSVC)
-    set_target_properties(ifmsvg PROPERTIES
-        LINK_FLAGS "/DEF:${CMAKE_SOURCE_DIR}/ifmsvg.def"
-    )
-endif()
 
 find_package(ZLIB REQUIRED)
 target_link_libraries(ifmsvg PRIVATE ZLIB::ZLIB)
@@ -102,5 +95,8 @@ set_source_files_properties(
     PROPERTIES COMPILE_OPTIONS "/EHa"
 )
 
-enable_testing()
-add_subdirectory(test)
+option(IFMSVG_BUILD_TESTS "Build tests" ON)
+if(IFMSVG_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(test)
+endif()
