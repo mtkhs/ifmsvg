@@ -144,7 +144,7 @@ int GetPictureInfoImpl(const void* buf, LONG_PTR len, unsigned int flag,
 
 }  // namespace
 
-static const char* kInfoA[] = { "00IN", "SVG/SVGZ Plug-in Version 0.1 (C) mtkhs", "*.svg;*.svgz", "SVG/SVGZ" };
+static const char* kInfoA[] = { "00IN", "SVG/SVGZ Plug-in Version 0.2 (C) mtkhs", "*.svg;*.svgz", "SVG/SVGZ" };
 static constexpr int kInfoCount = 4;
 
 extern "C" {
